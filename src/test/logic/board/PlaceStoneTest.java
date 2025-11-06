@@ -1,0 +1,69 @@
+package test.logic.board;
+
+import api.BoardTestInterface;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import logic.*;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class PlaceStoneTest {
+    @Test
+    @DisplayName("out of bounds check (above)")
+    void boardPlaceStoneOutOfBoundsAbove() {
+        BoardTestInterface board = new Board();
+        IndexOutOfBoundsException error = null;
+        try {
+            board.placeStone(999);
+        } catch (IndexOutOfBoundsException e) {
+            error = e;
+        }
+        assertNotNull(error);
+    }
+
+    @Test
+    @DisplayName("out of bounds check (below)")
+    void boardPlaceStoneOutOfBoundsBelow() {
+        BoardTestInterface board = new Board();
+        IndexOutOfBoundsException error = null;
+        try {
+            board.placeStone(-1);
+        } catch (IndexOutOfBoundsException e) {
+            error = e;
+        }
+        assertNotNull(error);
+    }
+
+    @Test
+    @DisplayName("valid placing check")
+    void boardPlaceStoneValidPlacing() {
+        BoardTestInterface board = new Board();
+        board.placeStone(0);
+        board.placeStone(0);
+        board.placeStone(1);
+        board.placeStone(2);
+
+        assertEquals(1, board.getBoard()[board.getrows()- 1][0].getStatus());
+        assertEquals(1, board.getBoard()[board.getrows()- 1][1].getStatus());
+        assertEquals(2, board.getBoard()[board.getrows()- 2][0].getStatus());
+        assertEquals(0, board.getBoard()[board.getrows()- 2][1].getStatus());
+        assertEquals(0, board.getBoard()[board.getrows()- 3][0].getStatus());
+    }
+
+    @Test
+    @DisplayName("place too many stones ontop of one another")
+    void BoardPlaceStoneAtIndex0() {
+        BoardTestInterface board = new Board();
+        IllegalArgumentException error = null;
+
+        try {
+            for (int i = 0; i < 100;  i++) {
+                board.placeStone(0);
+            }
+        } catch (IllegalArgumentException e) {
+            error = e;
+        }
+        assertNotNull(error);
+        assertEquals("Column is full", error.getMessage());
+    }
+}
