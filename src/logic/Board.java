@@ -624,6 +624,7 @@ public class Board implements BoardInterface, BoardTestInterface {
                 if (ch == 'B') {
                     checkB = true;
 
+
                 }
             } else {
 
