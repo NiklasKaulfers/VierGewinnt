@@ -3,8 +3,9 @@ package test.logic.board;
 import api.BoardTestInterface;
 import org.junit.jupiter.api.*;
 import logic.*;
+import test.logic.helper.SaveFileHelper;
 
-import java.io.FileReader;
+import java.io.IOException;
 
 public class SaveFileTest {
     BoardTestInterface board;
@@ -28,9 +29,6 @@ public class SaveFileTest {
         BoardTestInterface loadedBoard = new Board();
         loadedBoard.overwriteVariableWithSavestats();
 
-        System.out.print("Loaded Board: \n" + loadedBoard.toString() + "\n");
-        System.out.println("Original Board: \n" + board.toString() + "\n");
-
         Assertions.assertEquals(loadedBoard.toString(), board.toString());
     }
 
@@ -45,34 +43,38 @@ public class SaveFileTest {
         board.placeStone(1);
         board.saveBoard();
 
-        StringBuilder stringBuilder = new StringBuilder();
-        FileReader reader = null;
-        int ch;
+        String actualSaveCode = "";
 
         try {
-            reader = new FileReader("savestats.txt");
-            while ((ch = reader.read()) != -1) {
-                stringBuilder.append((char) ch);
-            }
-            reader.close();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-            Assertions.assertNull(e, "File reader error, Check if file exists");
-            return;
+            actualSaveCode = SaveFileHelper.loadSaveStats();
+        } catch (IOException e) {
+            Assertions.fail(e.getMessage());
         }
 
-        int playerTurn = board.getTurn() ? 1 : 2;
-        int rows = board.getrows();
-        int columns = board.getColumns();
-        int isFull = board.getIsFull() ? 1 : 0;
-
-        // all positions in the board from top left to bottom right
-        String boardLayout = board.toString()
-                .replaceAll("\\[", "")
-                .replaceAll("]", "")
-                .replaceAll("\n", "");
-
-        String saveCode = playerTurn + "a" + rows + "a" + columns + "a" + isFull + "aB" + boardLayout;
-        Assertions.assertEquals(saveCode, stringBuilder.toString());
+        String expectedSaveCode = SaveFileHelper.getSaveCodeFromBoard(board);
+        Assertions.assertEquals(expectedSaveCode, actualSaveCode);
     }
+
+    @Test
+    @DisplayName("Test detection of full board and it being saved properly")
+    void testDetectionOfFullBoard() {
+        for  (int i = 0; i < board.getrows(); i++) {
+            for (int j = 0; j < board.getColumns(); j++) {
+                board.placeStone(j);
+            }
+        }
+        Assertions.assertTrue(board.getIsFull(), "Board is not full");
+        board.saveBoard();
+
+        String saveCode;
+
+        try {
+            saveCode = SaveFileHelper.loadSaveStats();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        Assertions.assertEquals(saveCode, SaveFileHelper.getSaveCodeFromBoard(board));
+    }
+
 }
