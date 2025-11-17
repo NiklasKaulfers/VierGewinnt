@@ -29,7 +29,7 @@ public class SaveFileTest {
         BoardTestInterface loadedBoard = new Board();
         loadedBoard.overwriteVariableWithSavestats();
 
-        Assertions.assertEquals(loadedBoard.toString(), board.toString());
+        Assertions.assertEquals(board.toString(), loadedBoard.toString());
     }
 
     @Test
@@ -66,15 +66,14 @@ public class SaveFileTest {
         Assertions.assertTrue(board.getIsFull(), "Board is not full");
         board.saveBoard();
 
-        String saveCode;
+        String saveCode = "";
 
         try {
             saveCode = SaveFileHelper.loadSaveStats();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Assertions.fail(e.getMessage());
         }
-
-        Assertions.assertEquals(saveCode, SaveFileHelper.getSaveCodeFromBoard(board));
+        Assertions.assertEquals(SaveFileHelper.getSaveCodeFromBoard(board), saveCode);
     }
 
 }
