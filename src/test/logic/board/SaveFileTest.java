@@ -100,7 +100,6 @@ public class SaveFileTest {
         } catch (IOException e) {
             Assertions.fail(e.getMessage());
         }
-
-        Assertions.assertEquals(saveCode, SaveFileHelper.getSaveCodeFromBoard(board));
+        Assertions.assertEquals(SaveFileHelper.getSaveCodeFromBoard(board), saveCode);
     }
 }
