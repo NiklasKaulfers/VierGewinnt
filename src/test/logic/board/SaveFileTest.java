@@ -29,7 +29,7 @@ public class SaveFileTest {
         BoardTestInterface loadedBoard = new Board();
         loadedBoard.overwriteVariableWithSavestats();
 
-        Assertions.assertEquals(loadedBoard.toString(), board.toString());
+        Assertions.assertEquals(board.toString(), loadedBoard.toString());
     }
 
     @Test
