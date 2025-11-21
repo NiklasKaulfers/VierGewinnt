@@ -1,7 +1,5 @@
 package api;
 
-import logic.Board;
-import logic.Tile;
 
 public interface BoardInterface {
     void placeStone(int column); // diese Methode legt einen Stein, überprüft den Status und wechselt den Spieler
@@ -12,7 +10,7 @@ public interface BoardInterface {
     void savePvP(boolean pvp); // pvp = true wenn Player gegen Player, und = false bei Player gegen Computer 
     boolean loadPvP();
     int getComputerMove();
-    Tile[][] getBoard();
+    TileInterface[][] getBoard();
     int getColumns(); //gibt die Anzahl der Spalten
     int getrows();//gibt die Anzahl der Reihen
     boolean getTurn();

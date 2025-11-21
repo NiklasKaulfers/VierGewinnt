@@ -1,6 +1,7 @@
 package test;
 
 import api.BoardTestInterface;
+import api.TileInterface;
 import logic.*;
 import static org.junit.jupiter.api.Assertions.assertEquals;    
 import org.junit.jupiter.api.BeforeEach;
@@ -20,7 +21,7 @@ public class GameTest {
     void testPlaceStone1(){
         board.placeStone(0);    // Spieler 1
         board.placeStone(0);    // Spieler 2
-        Tile[][] t = board.getBoard();
+        TileInterface[][] t = board.getBoard();
         assertEquals(1, t[5][0].getStatus(), "Falscher Status im Feld 5/0");
         assertEquals(2, t[4][0].getStatus(), "Falscher Status im Feld 4/0");
         assertEquals(0, t[5][1].getStatus(), "Falscher Status im Feld 5/1");
@@ -132,14 +133,14 @@ public class GameTest {
         board.placeStone(3);                   // Spieler 1
         board.placeStone(0);                   // Spieler 2
         board.placeStone(board.getComputerMove());    // PC
-        Tile[][] t = board.getBoard();
+        TileInterface[][] t = board.getBoard();
         gameprint(t);
         assertEquals(1, t[5][4].getStatus(), "PC ist dumm!");
         assertEquals(1, board.getWhoHasWon(), "Falscher Gewinner Status");
         assertEquals(false, board.getIsFull(), "Falscher IsFull Status");
     }
     // Ausgabe auf der Debug Console
-    void gameprint(Tile[][] t){
+    void gameprint(TileInterface[][] t){
         String s = "Spielfeld: \n";
         for(int i = 0; i < 6; i++){
             for(int j = 0; j < 7; j++){
@@ -163,7 +164,7 @@ public class GameTest {
         board.placeStone(3);                   // Spieler 1
         board.placeStone(4);                   // Spieler 2
         board.placeStone(board.getComputerMove());    // PC
-        Tile[][] t = board.getBoard();
+        TileInterface[][] t = board.getBoard();
         gameprint(t);
         assertEquals(1, t[3][2].getStatus(), "PC ist dumm!");
         assertEquals(1, board.getWhoHasWon(), "Falscher Gewinner Status");
@@ -179,7 +180,7 @@ public class GameTest {
         board.placeStone(board.getComputerMove()); 
         board.placeStone(board.getComputerMove()); 
         board.placeStone(board.getComputerMove());    // PC
-        Tile[][] t = board.getBoard();
+        TileInterface[][] t = board.getBoard();
         gameprint(t);                                 // hier muss man leider im moment selber schauen (Debug-Console)
         assertEquals(false, board.getIsFull(), "Falscher IsFull Status");
     }

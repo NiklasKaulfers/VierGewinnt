@@ -1,11 +1,11 @@
 package gui.frames;
 
 import api.BoardInterface;
+import api.TileInterface;
 import gui.entity.BordersForCircle;
 import gui.entity.Circle;
 import gui.handler.MouseHandler;
 import logic.Board;
-import logic.Tile;
 
 import javax.swing.*;
 import java.awt.*;
@@ -520,7 +520,7 @@ public class MainPanel extends JPanel {
     }
 
     public void loadSaveFile() {
-        Tile[][] myBoard = boardInterface.getBoard();
+        TileInterface[][] myBoard = boardInterface.getBoard();
         int lastColumn = NUM_COLUMNS - 1;
         int lastRow = NUM_ROWS - 1;
 

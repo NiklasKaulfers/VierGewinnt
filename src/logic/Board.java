@@ -2,6 +2,7 @@ package logic;
 
 import api.BoardInterface;
 import api.BoardTestInterface;
+import api.TileInterface;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -14,7 +15,7 @@ import java.util.regex.Matcher;
 
 public class Board implements BoardInterface, BoardTestInterface {
     boolean isPlayer1sTurn; //ist Spieler eins am Zug?
-    Tile[][] board; // das Spielfeld 	//Array[rows][columns]
+    TileInterface[][] board; // das Spielfeld 	//Array[rows][columns]
     int whoHasWon; //0: niemand     1: Spieler1     2:Spieler2
     boolean isFull; // wenn das Spielfeld voll ist und keiner gewonnen hat
     final private String savepath = "savestats.txt"; //filepath + name, where the savefile is placed
@@ -72,7 +73,7 @@ public class Board implements BoardInterface, BoardTestInterface {
     @Override
     public String toString() {
         StringBuilder ret = new StringBuilder();
-        for (Tile[] tiles : board) {
+        for (TileInterface[] tiles : board) {
             for (int l = 0; l < board[0].length; l++) {
                 ret.append(tiles[l].toString());
             }
@@ -90,7 +91,7 @@ public class Board implements BoardInterface, BoardTestInterface {
 
     void isWon(int column) {
         int actualRow = isTopOfColumn(column);
-        int player = board[actualRow][column].status;
+        int player = board[actualRow][column].getStatus();
 
         if (player != 0) {
             //Diagonal
@@ -122,7 +123,7 @@ public class Board implements BoardInterface, BoardTestInterface {
             columnToCheck += columnDirection;
             if (rowToCheck < 0 || columnToCheck < 0 || rowToCheck >= numberOfRows || columnToCheck >= numberOfColumns)
                 break;
-            if (board[rowToCheck][columnToCheck].status == player)
+            if (board[rowToCheck][columnToCheck].getStatus() == player)
                 count++;
             else
                 break;
@@ -133,9 +134,9 @@ public class Board implements BoardInterface, BoardTestInterface {
     void isFull() {
         int numberOfRows = board.length;
         int numberOfColumns = board[0].length;
-        for (Tile[] tiles : board) {
+        for (TileInterface[] tiles : board) {
             for (int column = 0; column < numberOfColumns; column++) {
-                if (tiles[column].status == 0) {
+                if (tiles[column].getStatus() == 0) {
                     this.isFull = false;
                     return;
                 }
@@ -180,7 +181,7 @@ public class Board implements BoardInterface, BoardTestInterface {
      * @param column Die Spalte, für die die oberste Reihe zurückgegeben werden soll.
      * @return Die Reihe des obersten Steins in der Spalte, oder AnzahlRows + 1, wenn leer
      */
-    int isTopOfColumn(int column) {
+    public int isTopOfColumn(int column) {
         for (int row = board.length - 1; row >= 0; row--) {
             if (board[row][column].isEmpty()) {
                 return row + 1;
@@ -205,7 +206,7 @@ public class Board implements BoardInterface, BoardTestInterface {
      * @param value Die neue Matrix von Kacheln für das Spielfeld.
      */
     @Override
-    public void setBoard(Tile[][] value) {
+    public void setBoard(TileInterface[][] value) {
         int row = value.length;
         int column = value[0].length;
 
@@ -533,8 +534,8 @@ public class Board implements BoardInterface, BoardTestInterface {
         //einfügen des Boards
         output.append("B");        //seperator einfügen
 
-        for (Tile[] r : this.board) {
-            for (Tile c : r) {
+        for (TileInterface[] r : this.board) {
+            for (TileInterface c : r) {
                 output.append(Integer.toString(c.getStatus()));
             }
         }
@@ -707,7 +708,7 @@ public class Board implements BoardInterface, BoardTestInterface {
     }
 
     @Override
-    public Tile[][] getBoard() {
+    public TileInterface[][] getBoard() {
         return this.board;
     }
 

@@ -33,6 +33,33 @@ public class SaveFileTest {
     }
 
     @Test
+    @DisplayName("Test loading with fixed string as expected result")
+    void testSaveAndLoadFixedString() {
+        board.placeStone(1);
+        board.placeStone(2);
+        board.placeStone(2);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(0);
+        board.placeStone(0);
+        board.saveBoard();
+
+        String actualSaveCode = "";
+
+        try {
+            actualSaveCode = SaveFileHelper.loadSaveStats();
+        } catch (IOException e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        Assertions.assertEquals("1a6a7a0aB020000001000000200000010000022100001120000", actualSaveCode);
+
+    }
+
+    @Test
     @DisplayName("Test correct creation of savecode")
     void testSaveCode() {
         board.placeStone(1);
@@ -66,15 +93,14 @@ public class SaveFileTest {
         Assertions.assertTrue(board.getIsFull(), "Board is not full");
         board.saveBoard();
 
-        String saveCode;
+        String saveCode = "";
 
         try {
             saveCode = SaveFileHelper.loadSaveStats();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Assertions.fail(e.getMessage());
         }
 
         Assertions.assertEquals(saveCode, SaveFileHelper.getSaveCodeFromBoard(board));
     }
-
 }
