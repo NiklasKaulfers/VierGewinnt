@@ -26,7 +26,7 @@ public class IsTopOfColumnTest {
         board.placeStone(1);
         board.placeStone(1);
 
-        Assertions.assertEquals(board.isTopOfColumn(1), 0);
+        Assertions.assertEquals(0, board.isTopOfColumn(1));
     }
 
 }
