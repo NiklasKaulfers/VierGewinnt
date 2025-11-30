@@ -1,9 +1,14 @@
 plugins {
     id("java")
+    id("application")
 }
 
 group = "org.hszg"
 version = "1.0-SNAPSHOT"
+
+application {
+    mainClass = "org.hszg.Main"
+}
 
 repositories {
     mavenCentral()
