@@ -1,0 +1,108 @@
+package org.hszg.logic.board;
+
+import org.hszg.api.BoardTestInterface;
+import org.hszg.logic.Board;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.hszg.logic.helper.SaveFileHelper;
+
+import java.io.IOException;
+
+public class SaveFileTest {
+    BoardTestInterface board;
+
+    @BeforeEach
+    void setUp() {
+        board = new Board();
+    }
+
+    @Test
+    @DisplayName("Test successful loading and saving")
+    void testSaveAndLoadGameState() {
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.saveBoard();
+
+        BoardTestInterface loadedBoard = new Board();
+        loadedBoard.overwriteVariableWithSavestats();
+
+        Assertions.assertEquals(board.toString(), loadedBoard.toString());
+    }
+
+    @Test
+    @DisplayName("Test loading with fixed string as expected result")
+    void testSaveAndLoadFixedString() {
+        board.placeStone(1);
+        board.placeStone(2);
+        board.placeStone(2);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(0);
+        board.placeStone(0);
+        board.saveBoard();
+
+        String actualSaveCode = "";
+
+        try {
+            actualSaveCode = SaveFileHelper.loadSaveStats();
+        } catch (IOException e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        Assertions.assertEquals("1a6a7a0aB020000001000000200000010000022100001120000", actualSaveCode);
+
+    }
+
+    @Test
+    @DisplayName("Test correct creation of savecode")
+    void testSaveCode() {
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        board.saveBoard();
+
+        String actualSaveCode = "";
+
+        try {
+            actualSaveCode = SaveFileHelper.loadSaveStats();
+        } catch (IOException e) {
+            Assertions.fail(e.getMessage());
+        }
+
+        String expectedSaveCode = SaveFileHelper.getSaveCodeFromBoard(board);
+        Assertions.assertEquals(expectedSaveCode, actualSaveCode);
+    }
+
+    @Test
+    @DisplayName("Test detection of full board and it being saved properly")
+    void testDetectionOfFullBoard() {
+        for  (int i = 0; i < board.getrows(); i++) {
+            for (int j = 0; j < board.getColumns(); j++) {
+                board.placeStone(j);
+            }
+        }
+        Assertions.assertTrue(board.getIsFull(), "Board is not full");
+        board.saveBoard();
+
+        String saveCode = "";
+
+        try {
+            saveCode = SaveFileHelper.loadSaveStats();
+        } catch (IOException e) {
+            Assertions.fail(e.getMessage());
+        }
+        Assertions.assertEquals(SaveFileHelper.getSaveCodeFromBoard(board), saveCode);
+    }
+}
