@@ -555,7 +555,6 @@ public class Board implements BoardInterface, BoardTestInterface {
             return;
         }
         setValuesFromSavecode(code);
-
     }
 
     /**

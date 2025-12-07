@@ -102,4 +102,24 @@ public class SaveFileTest {
         }
         Assertions.assertEquals(SaveFileHelper.getSaveCodeFromBoard(board), saveCode);
     }
+
+    @Test
+    @DisplayName("Test saving with faulty values")
+    void testSaveWithFaultyValues() {
+        board.placeStone(1);
+        board.placeStone(1);
+        board.placeStone(1);
+        BoardTestInterface preLoadedBoard = board;
+        try {
+            SaveFileHelper.writeSaveStats("ABZDEF");
+        } catch (IOException e) {
+            Assertions.fail(e.getMessage());
+        }
+        try {
+            board.overwriteVariableWithSavestats();
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+        Assertions.assertEquals(preLoadedBoard, board, "Invalid has been loaded and overwritten something");
+    }
 }

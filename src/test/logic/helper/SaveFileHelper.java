@@ -4,6 +4,7 @@ import api.BoardTestInterface;
 import org.junit.jupiter.api.Assertions;
 
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 
 public class SaveFileHelper {
@@ -24,6 +25,14 @@ public class SaveFileHelper {
             Assertions.fail("File reader error, Check if file exists");
         }
         return stringBuilder.toString();
+    }
+
+    public static void writeSaveStats(String saveCode) throws IOException {
+        try (FileWriter writer = new FileWriter("savestats.txt")) {
+            writer.write(saveCode);
+        } catch (IOException e) {
+            Assertions.fail("File write error, Check if file exists");
+        }
     }
 
     public static String getSaveCodeFromBoard(BoardTestInterface board) {
