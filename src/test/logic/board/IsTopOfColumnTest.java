@@ -30,12 +30,9 @@ public class IsTopOfColumnTest {
     @Test
     @DisplayName("WHEN column 1 has 6 stones THEN return 0")
     void fullColumnTest(){
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
+        for (int i = 0; i < 6; i++) {
+            board.placeStone(i);
+        }
 
         Assertions.assertEquals(0, board.isTopOfColumn(1));
     }
@@ -57,16 +54,9 @@ public class IsTopOfColumnTest {
     @DisplayName("GIVEN a 10x10 board WHEN column 1 has 10 stones THEN return 0")
     void fullColumn10Test(){
         board = new Board(10, 10);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
-        board.placeStone(1);
+        for (int i = 0; i < 10; i++) {
+            board.placeStone(1);
+        }
 
         Assertions.assertEquals(0, board.isTopOfColumn(1));
     }
