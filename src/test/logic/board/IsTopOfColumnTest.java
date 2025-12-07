@@ -11,7 +11,6 @@ public class IsTopOfColumnTest {
 
     BoardTestInterface board;
     @BeforeEach
-    @DisplayName("GIVEN board with dimensions 6x6")
     void setUp() {
         board = new Board();
     }
@@ -31,7 +30,7 @@ public class IsTopOfColumnTest {
     @DisplayName("WHEN column 1 has 6 stones THEN return 0")
     void fullColumnTest(){
         for (int i = 0; i < 6; i++) {
-            board.placeStone(i);
+            board.placeStone(1);
         }
 
         Assertions.assertEquals(0, board.isTopOfColumn(1));
@@ -63,13 +62,25 @@ public class IsTopOfColumnTest {
 
     @Test
     @DisplayName("WHEN column -1 is called THEN do nothing")
-    void nothingTest(){
+    void outOfBoundsTooLowTest(){
         Assertions.assertEquals(0, board.isTopOfColumn(-1));
     }
 
     @Test
     @DisplayName("WHEN column 7 is called THEn do nothing")
-    void nothing7Test(){
+    void outOfBoundsTooHighTest(){
         Assertions.assertEquals(0, board.isTopOfColumn(7));
+    }
+
+    @Test
+    @DisplayName("WHEN column 0 is called and no stones are placed THEN return 6")
+    void emptyColumn0Test(){
+        Assertions.assertEquals(6, board.isTopOfColumn(0));
+    }
+
+    @Test
+    @DisplayName("WHEN column 6 is called and no stones are placed THEN return 6")
+    void emptyColumn6Test(){
+        Assertions.assertEquals(6, board.isTopOfColumn(0));
     }
 }
