@@ -16,7 +16,9 @@ public class SaveFileTest {
     }
 
     @Test
-    @DisplayName("Test successful loading and saving")
+    @DisplayName("GIVEN a board with some turns passed" +
+            "WHEN saving and loading the Board" +
+            "THEN have the newly loaded Board match the Board at its saving state")
     void testSaveAndLoadGameState() {
         board.placeStone(1);
         board.placeStone(1);
@@ -33,7 +35,9 @@ public class SaveFileTest {
     }
 
     @Test
-    @DisplayName("Test loading with fixed string as expected result")
+    @DisplayName("GIVEN a board with turns passed in a specific order " +
+            "WHEN loading the save" +
+            "THEN expect the savecode to be 1a6a7a0aB020000001000000200000010000022100001120000")
     void testSaveAndLoadFixedString() {
         board.placeStone(1);
         board.placeStone(2);
@@ -60,7 +64,8 @@ public class SaveFileTest {
     }
 
     @Test
-    @DisplayName("Test correct creation of savecode")
+    @DisplayName("GIVEN a board with some turns passed WHEN saving and loading that save " +
+            "THEN have the original Board be the same as the loaded Board")
     void testSaveCode() {
         board.placeStone(1);
         board.placeStone(1);
@@ -83,7 +88,7 @@ public class SaveFileTest {
     }
 
     @Test
-    @DisplayName("Test detection of full board and it being saved properly")
+    @DisplayName("GIVEN a full board WHEN saving THEN properly implement the isFull variable")
     void testDetectionOfFullBoard() {
         for  (int i = 0; i < board.getrows(); i++) {
             for (int j = 0; j < board.getColumns(); j++) {
@@ -104,7 +109,9 @@ public class SaveFileTest {
     }
 
     @Test
-    @DisplayName("Test saving with faulty values")
+    @DisplayName("GIVEN an existing board " +
+            "WHEN loading a faulty savecode " +
+            "THEN maintain the original board and disregard the savefile")
     void testSaveWithFaultyValues() {
         board.placeStone(1);
         board.placeStone(1);
@@ -112,7 +119,7 @@ public class SaveFileTest {
         BoardTestInterface preLoadedBoard = board;
         try {
             SaveFileHelper.writeSaveStats("ABZDEF");
-        } catch (IOException e) {
+        } catch (Exception e) {
             Assertions.fail(e.getMessage());
         }
         try {
@@ -121,5 +128,32 @@ public class SaveFileTest {
             Assertions.fail(e.getMessage());
         }
         Assertions.assertEquals(preLoadedBoard, board, "Invalid has been loaded and overwritten something");
+    }
+
+    @Test
+    @DisplayName("GIVEN a just initialized board WHEN calling load save THEN do nothing")
+    void testLoadingOfNoSaveFile(){
+        BoardTestInterface existingBoard = board;
+        try {
+            board.overwriteVariableWithSavestats();
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+        Assertions.assertEquals(existingBoard, board, "Invalid has been loaded and overwritten something");
+    }
+
+    @Test
+    @DisplayName("GIVEN an empty board WHEN saving THEN expect the saveCode to be")
+    void testSaveCodeOnBoardWithNoTurns(){
+        BoardTestInterface originalBoard = board;
+        String actualSaveCode = "1a6a7a0aB000000000000000000000000000000000000000000";
+        try {
+            SaveFileHelper.writeSaveCode(actualSaveCode);
+        } catch (Exception e) {
+            Assertions.fail(e.getMessage());
+        }
+        board.overwriteVariableWithSavestats();
+        Assertions.assertEquals(board, originalBoard, "Invalid has been loaded and overwritten something");
+
     }
 }

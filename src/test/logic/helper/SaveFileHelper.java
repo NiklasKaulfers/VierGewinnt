@@ -27,11 +27,19 @@ public class SaveFileHelper {
         return stringBuilder.toString();
     }
 
-    public static void writeSaveStats(String saveCode) throws IOException {
+    public static void writeSaveStats(String saveCode) throws Exception {
         try (FileWriter writer = new FileWriter("savestats.txt")) {
             writer.write(saveCode);
-        } catch (IOException e) {
-            Assertions.fail("File write error, Check if file exists");
+        } catch (Exception e) {
+            throw new  Exception("Error writing save stats file");
+        }
+    }
+
+    public static void writeSaveCode(String saveCode) throws Exception {
+        try (FileWriter writer = new FileWriter("savestats.txt")) {
+            writer.write(saveCode);
+        } catch (Exception e) {
+            throw new Exception("File write error, Check if file exists");
         }
     }
 
