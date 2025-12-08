@@ -5,6 +5,7 @@ import org.junit.jupiter.api.*;
 import logic.*;
 import test.logic.helper.SaveFileHelper;
 
+import java.io.File;
 import java.io.IOException;
 
 public class SaveFileTest {
@@ -13,6 +14,15 @@ public class SaveFileTest {
     @BeforeEach
     void setUp() {
         board = new Board();
+    }
+
+    @AfterEach
+    void tearDown() {
+        File saveFile = new File("savestats.txt");
+        boolean destroyedFileSuccess = saveFile.delete();
+        if (!destroyedFileSuccess) {
+            throw new IllegalStateException("Unable to delete file");
+        }
     }
 
     @Test
@@ -145,6 +155,8 @@ public class SaveFileTest {
     @Test
     @DisplayName("GIVEN an empty board WHEN saving THEN expect the saveCode to be")
     void testSaveCodeOnBoardWithNoTurns(){
+        board.placeStone(0);
+        board.placeStone(0);
         BoardTestInterface originalBoard = board;
         String actualSaveCode = "1a6a7a0aB000000000000000000000000000000000000000000";
         try {
@@ -154,6 +166,5 @@ public class SaveFileTest {
         }
         board.overwriteVariableWithSavestats();
         Assertions.assertEquals(board, originalBoard, "Invalid has been loaded and overwritten something");
-
     }
 }
