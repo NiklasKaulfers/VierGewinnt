@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="org.hszg.logic.board.IsTopOfColumnTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-12-16T12:41:54.283Z" hostname="MacBook-Air-von-Niklas.local" time="0.0">
+  <properties/>
+  <testcase name="GIVEN a board that allows with the default parameters (7-7) WHEN column 1 had 6 stones placed THEN return 0" classname="org.hszg.logic.board.IsTopOfColumnTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
