@@ -1,2 +1,9 @@
 #ignores class files
 *.class
+
+#ignore generated files
+PvP.data
+savestats.txt
+
+#ignore testing files
+run-test.sh
